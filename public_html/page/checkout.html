@@ -1,0 +1,288 @@
+<!-- Checkout Step Area -->
+<div class="checkout_steps_area">
+    <a href ng-class="{'active': paso === 0, 'complated': paso > 0}"><i class="icofont-check-circled"></i> Autenticar</a>
+    <a href ng-class="{'active': paso === 1, 'complated': paso > 1}"><i class="icofont-check-circled"></i> Comenzar</a>
+    <a href ng-class="{'active': paso === 2, 'complated': paso > 2}"><i class="icofont-check-circled"></i> Revisar</a>
+    <a href ng-class="{'active': paso === 3, 'complated': paso > 3}"><i class="icofont-check-circled"></i> Pagar</a>
+    <a href ng-class="{'active': paso === 4, 'complated': paso > 4}"><i class="icofont-check-circled"></i> Finalizar</a>
+</div>
+<!-- Checkout Step Area -->
+
+<!-- Checkout Area -->
+<div class="checkout_area section_padding_100">
+    <div class="container">
+        <!-- Inicio paso 0 -->
+        <div class="row" ng-show="paso === 0">
+            <div class="col-12 col-md-6">
+                <div class="checkout_details_area mb-50">
+                    <h5>Pagar como invitado o registrarse</h5>
+                    <p>Regístrese con nosotros para una futura conveniencia:</p>
+
+                    <div class="custom-control mb-2 custom-radio">
+                        <input type="radio" id="customRadioInvitado" name="customRadio" ng-model="selectRadio" value="INVITADO" class="custom-control-input">
+                        <label class="custom-control-label" for="customRadioInvitado">Pagar como invitado</label>
+                    </div>
+                    <div class="custom-control mb-2 custom-radio">
+                        <input type="radio" id="customRadioRegistrar" name="customRadio" ng-model="selectRadio" value="REGISTRAR" class="custom-control-input">
+                        <label class="custom-control-label" for="customRadioRegistrar">Registrarse</label>
+                    </div>
+
+                    <h5 class="mt-4">Regístrese y ahorre tiempo!</h5>
+                    <p>Regístrese con nosotros para una futura conveniencia:</p>
+
+                    <p class="mb-1"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Salida rapida y facil</p>
+                    <p class="mb-1"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Fácil acceso a su historial y estado de pedidos</p>
+
+                    <button class="btn btn-primary mt-4" ng-click="seguir()" ng-disabled="(selectRadio === '')">Seguir</button>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="checkout_details_area mb-50">
+                    <h5>Login</h5>
+                    <p>¿Ya registrado? Inicie sesión a continuación:</p>
+
+                    <form autocomplete="off">
+                        <div class="form-group">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" class="form-control" placeholder="Usuario" ng-model="formLogin.usuario" azs-length="15" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contrasena">Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Contraseña" ng-model="formLogin.contrasena" azs-length="15" required>
+                        </div>
+                        <a class="forget_password mb-4" href ui-sref="recuperar-contrasena">¿Contraseña olvidada?</a>
+                        <button type="submit" class="btn btn-primary mt-4" ng-click="ingresar()">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Inicio paso 0 -->
+
+        <!-- Inicio paso 1 -->
+        <div class="row" ng-show="paso === 1">
+            <div class="col-12" ng-show="listadoPedido.length > 0">
+                <hr>
+                <button class="btn btn-primary mt-2 mb-2" ng-click="abrirPedidosAnteriores()">Datos ocupados anteriormente</button>
+                <hr>
+            </div>
+            <div class="col-12">
+                <div class="checkout_details_area clearfix">
+                    <form name="myFormPedido">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first_name">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" azs-length="150"
+                                       ng-class="{'is-invalid': mostrar && myFormPedido.nombre.$error.required}" ng-model="formPedido.nombre" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name">Apellido</label>
+                                <input type="text" class="form-control" name="apellido" azs-length="150"
+                                       ng-class="{'is-invalid': mostrar && myFormPedido.apellido.$error.required}" ng-model="formPedido.apellido" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email_address">Correo</label>
+                                <input type="email" class="form-control" name="correo" azs-length="30"
+                                       ng-class="{'is-invalid': mostrar && (myFormPedido.correo.$invalid || myFormPedido.correo.$error.required)}" ng-model="formPedido.correo" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone_number">Número de teléfono</label>
+                                <input type="number" class="form-control" name="telefono" min="0" azs-length="15"
+                                       ng-class="{'is-invalid': mostrar && myFormPedido.telefono.$error.required}" ng-model="formPedido.telefono" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="street_address">Dirección</label>
+                                <input type="text" class="form-control" name="direccion" azs-length="250"
+                                       ng-class="{'is-invalid': mostrar && myFormPedido.direccion.$error.required}" ng-model="formPedido.direccion" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="city">Ciudad</label>
+                                <input type="text" class="form-control" name="ciudad" azs-length="30"
+                                       ng-class="{'is-invalid': mostrar && myFormPedido.ciudad.$error.required}" ng-model="formPedido.ciudad" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="city">Provincia</label>
+                                <input type="text" class="form-control" name="provincia" azs-length="30"
+                                       ng-class="{'is-invalid': mostrar && myFormPedido.provincia.$error.required}" ng-model="formPedido.provincia" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="postcode">Número Vendedor</label>
+                                <input type="text" class="form-control" name="codigo" azs-length="50" ng-model="formPedido.codigo">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="order-notes">Comentarios</label>
+                                <textarea class="form-control" name="comentario" cols="30" rows="10" ng-model="formPedido.comentario"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="checkout_pagination d-flex justify-content-end mt-3">
+                    <div data-grecaptcha ng-model="formPedido.captcha" class="box-catcha"></div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="checkout_pagination d-flex justify-content-end mt-50">
+                    <a href class="btn btn-primary mt-2 ml-2" ng-click="comenzar()">Comenzar</a>
+                </div>
+            </div>
+        </div>
+        <!-- Inicio paso 1 -->
+
+        <!-- Inicio paso 2 -->
+        <div class="row" ng-show="paso === 2">
+            <div class="col-12">
+                <div class="checkout_details_area clearfix">
+                    <h5 class="mb-30">Revisa tu Carro</h5>
+
+                    <div class="cart-table">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-30">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Imagen</th>
+                                        <th scope="col">Producto</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in lista track by $index">
+                                        <td scope="row">
+                                            <img ng-src="{{baseImage()}}{{item.archivo}}" alt="Producto">
+                                        </td>
+                                        <td>
+                                            <a href ng-bind="item.nombre">Bluetooth Speaker</a>
+                                        </td>
+                                        <td ng-bind="item.precio | currency"></td>
+                                        <td ng-bind="item.cantidad | number:0"></td>
+                                        <td ng-bind="item.total | currency"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-7 ml-auto">
+                <div class="cart-total-area">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>Total</td>
+                                    <td ng-bind="total | currency"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="checkout_pagination d-flex justify-content-end mt-3">
+                        <a href class="btn btn-primary mt-2 ml-2" ng-click="confirmar()">Confirmar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Inicio paso 2 -->
+
+        <!-- Inicio paso 3 -->
+        <div class="row" ng-show="paso === 3">
+            <div class="col-12">
+                <div class="checkout_details_area clearfix">
+                    <div class="payment_method">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!-- Single Payment Method -->
+                            <div class="panel panel-default">
+                                <div aria-expanded="false" id="collapse_two" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="two">
+                                    <div class="panel-body">
+                                        <div class="pay_with_paypal">
+                                            <form action="#" method="post">
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <div id="paypal-button-container"></div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Inicio paso 3 -->
+
+        <!-- Inicio paso 4 -->
+        <div class="row" ng-show="paso === 4">
+            <div class="col-12">
+                <div class="order_complated_area clearfix">
+                    <h5>Gracias por su pedido.</h5>
+                    <p>Recibirás un correo electrónico con los detalles de tu pedido.</p>
+                    <p class="orderid mb-0">Tu pedido id #{{identificadorPedido}}</p>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="checkout_pagination d-flex justify-content-end mt-30">
+                    <a href ui-sref="inicio" class="btn btn-primary mt-2 ml-2">Volver al inicio</a>
+                </div>
+            </div>
+        </div>
+        <!-- Inicio paso 4 -->
+    </div>
+</div>
+<!-- Checkout Area End -->
+
+<div id="pedidosAnteriores" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pedidos anteriores</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">Fecha</th>
+                                        <th width="20%">Nombre</th>
+                                        <th width="20%">Apellido</th>
+                                        <th width="35%">Dirección</th>
+                                        <th width="10%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in listadoPedido">
+                                        <td width="15%" ng-bind="item.fecha"></td>
+                                        <td width="20%" ng-bind="item.nombre"></td>
+                                        <td width="20%" ng-bind="item.apellido"></td>
+                                        <td width="35%" ng-bind="item.direccion"></td>
+                                        <td width="10%">
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="radioPedido{{item.id}}" name="customRadio" ng-model="selectPedido" ng-value="item" 
+                                                       ng-click="cambiarPedido(item)" class="custom-control-input">
+                                                <label class="custom-control-label" for="radioPedido{{item.id}}"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="selecionarPedidoAnterior()">Seleccionar</button>
+            </div>
+        </div>
+    </div>
+</div>

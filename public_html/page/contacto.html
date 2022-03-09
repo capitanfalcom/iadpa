@@ -1,0 +1,54 @@
+<!-- Breadcumb Area -->
+<div class="breadcumb_area">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <h5>Contactanos</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Area -->
+
+<!-- Message Now Area -->
+<div class="message_now_area mt-30" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="contact_from mb-50">
+                    <form name="myFormMensaje" ng-submit="enviarMensaje()" autocomplete="off">
+                        <div class="contact_input_area">
+                            <div id="success_fail_info"></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="f_name" id="f-name" placeholder="Nombre Completo" azs-length="60" ng-model="formMensaje.nombre" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="Tu correo" azs-length="60" ng-model="formMensaje.correo" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Tu Mensaje *" ng-model="formMensaje.mensaje" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div data-grecaptcha data-ng-model="formMensaje.captcha" class="box-catcha"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary w-100">Enviar mensaje</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Message Now Area -->

@@ -1,0 +1,31 @@
+<!-- My Account Area -->
+<section class="my-account-area section_padding_100_50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-50">
+                    <hr>
+                    <ul class="nav nav-pills">
+                        <li ng-repeat="item in libros" class="nav-item">
+                            <a href ui-sref="flipbook({libro: item})" class="nav-link" ng-class="{'active': $state.params.libro == item}" ng-bind="item"></a>
+                        </li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-12">
+                
+            </div>
+            <div class="col-12">
+                <div class="container-flipbook mb-100">
+                    <div class="flipbook">
+                        <div ng-repeat="item in paginas">
+                            <img ng-src="{{obtenerUrl(item.nombre)}}" width="800" class="page-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- My Account Area -->

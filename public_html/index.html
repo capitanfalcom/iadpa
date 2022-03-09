@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es" ng-app="appIadpa">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Title  -->
+        <title data-ng-bind="'IADPA | ' + $state.current.data.pageTitle">IADPA</title>
+
+        <!-- Favicon  -->
+        <link rel="icon" href="img/favicon.ico">
+
+        <!-- Style CSS -->
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <!-- Preloader -->
+        <div id="preloader" style="display: none;">
+            <div class="spinner-grow" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Header Area -->
+        <header class="header_area">
+            <!-- Top Header Area -->
+            <div class="top-header-area">
+                <!--<img src="img/logo.png" class="logo" alt="logo" style="height: 100px; padding-top: 15px;">-->
+            </div>
+
+            <!-- Main Menu -->
+            <div class="bigshop-main-menu" ng-controller="navController" ng-init="iniciar()">
+                <div class="container">
+                    <div class="classy-nav-container breakpoint-off">
+                        <nav class="classy-navbar" id="bigshopNav">
+                            <a href ui-sref="inicio" class="nav-brand"><img src="img/logo.png" style="height: 200px;" alt="logo"></a>
+
+                            <!-- Toggler -->
+                            <div class="classy-navbar-toggler">
+                                <span class="navbarToggler"><span></span><span></span><span></span></span>
+                            </div>
+
+                            <!-- Menu -->
+                            <div class="classy-menu">
+                                <!-- Close -->
+                                <div class="classycloseIcon">
+                                    <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                                </div>
+
+                                <!-- Nav -->
+                                <div class="classynav">
+                                    <ul>
+                                        <li class="nav-item">
+                                            <a href ui-sref="inicio">Inicio</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href ui-sref="quienes-somos">Quiénes somos</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href ng-click="mostrarCategorias()">Cátalogo</a>
+                                            <div class="megamenu">
+                                                <ul class="single-mega cn-col-4" ng-repeat="group in grupoCategoria">
+                                                    <li ng-repeat="item in group">
+                                                        <a href ng-bind="item.nombre" ng-click="selectCategoria(item)"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href ui-sref="sucursales">Sucursales</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href ui-sref="contacto">Contactanos</a>
+                                        </li>
+                                        <li class="nav-item" ng-show="showFlipbook">
+                                            <a href ui-sref="flipbook">Flipbook</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Hero Meta -->
+                            <div class="hero_meta_area ml-auto d-flex align-items-center justify-content-end">
+                                <!-- Search -->
+                                <div class="search-area">
+                                    <div class="search-btn"><i class="icofont-search"></i></div>
+                                    <!-- Form -->
+                                    <div class="search-form">
+                                        <input type="search" class="form-control" placeholder="Buscar..." ng-model="search" ng-change="complete()">
+                                        <ul class="list-group" ng-show="librosOutput.length > 0" style="padding-bottom: 10px; font-size: 10px;">
+                                            <li class="list-group-item" ng-repeat="item in librosOutput| limitTo:5" ng-click="selectList()">
+                                                <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Cart -->
+                                <div class="cart-area" ng-hide="$state.is('checkout')">
+                                    <div class="cart--btn">
+                                        <i class="icofont-cart"></i> <span class="cart_quantity" ng-bind="localCart.length"></span>
+                                    </div>
+
+                                    <!-- Cart Dropdown Content -->
+                                    <div class="cart-dropdown-content">
+                                        <ul class="cart-list">
+                                            <li ng-repeat="item in localCart track by $index">
+                                                <div class="cart-item-desc">
+                                                    <a href class="image">
+                                                        <img ng-src="{{baseImage()}}{{item.archivo}}" class="cart-thumb">
+                                                    </a>
+                                                    <div>
+                                                        <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre"></a>
+                                                        <p><strong ng-bind="item.cantidad"></strong> x - <span class="price" ng-bind="item.precio | currency"></span></p>
+                                                    </div>
+                                                </div>
+                                                <span class="dropdown-product-remove" ng-click="quitarCarro(item.id)"><i class="icofont-bin"></i></span>
+                                            </li>
+                                        </ul>
+                                        <div class="cart-pricing my-4">
+                                            <ul>
+                                                <li>
+                                                    <span>Total:</span>
+                                                    <span ng-bind="resumen.total | currency"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="cart-box">
+                                            <a href ui-sref="checkout" class="btn btn-primary d-block" ng-show="localCart.length > 0">Comprar</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="account-area" ng-show="showConfig">
+                                    <div class="user-thumbnail">
+                                        <i class="fa fa-cog"></i>
+                                    </div>
+                                    <ul class="user-meta-dropdown">
+                                        <li class="user-title"><span></span> Usuario</li>
+                                        <li><a href ui-sref="app.libro">Libro</a></li>
+                                        <li><a href ui-sref="app.categoria">Categoria</a></li>
+                                        <li><a href ui-sref="app.pedido">Pedido</a></li>
+                                        <li><a href ui-sref="app.cuenta">Cuenta</a></li>
+                                        <li><a href ng-click="salir()"><i class="icofont-logout"></i> Salir</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Header Area End -->
+
+        <div ui-view></div>
+
+        <!-- Footer Area -->
+        <footer class="footer_area white-footer">
+            <!-- Footer Bottom -->
+            <div class="footer_bottom_area" style="background: black;">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <!-- Copywrite -->
+                        <div class="col-12 col-md-4">
+                            <div class="copywrite_text">
+                                <p style="color: white;">Copyright 2020 © IADPA Librería Panamá</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="footer_social_area mb-15 text-center" style="font-size: 30px;">
+                                <a href="https://www.facebook.com/IADPA-Panam%C3%A1-1538822116375019" style="color: white;">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://www.instagram.com/iadpa_panama/?hl=es-la" style="color: white;">
+                                    <i class="fa fa-instagram" aria-hidden="true"></i></a>
+                                <a href="https://www.youtube.com/channel/UCE9VyfsoKUSl0UL45vyGXMw" style="color: white;">
+                                    <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Payment Method -->
+                        <div class="col-12 col-md-4">
+                            <div class="payment_method">
+                                <img src="img/payment-method/paypal.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer Area -->
+
+        <!--Modal Starts--> 
+        <div class="modal-loading"></div>
+        <!--Modal Ends-->
+    </body>        
+    <script src="https://www.paypal.com/sdk/js?client-id=AUfdENlLe1-l-aijfzUXDyZSPGEhqmSezxmeh_iiDrbpTAjB5BY7owkSAMjGyPvIAW_PW5NLjKGwJDCA"></script>
+
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/popper.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/jquery.easing.min.js"></script>
+    <script src="js/lib/default/classy-nav.min.js"></script>
+    <script src="js/lib/owl.carousel.min.js"></script>
+    <script src="js/lib/default/scrollup.js"></script>
+    <script src="js/lib/waypoints.min.js"></script>
+    <script src="js/lib/jquery.countdown.min.js"></script>
+    <script src="js/lib/jquery.counterup.min.js"></script>
+    <script src="js/lib/jquery-ui.min.js"></script>
+    <script src="js/lib/jarallax.min.js"></script>
+    <script src="js/lib/jarallax-video.min.js"></script>
+    <script src="js/lib/jquery.magnific-popup.min.js"></script>
+    <script src="js/lib/jquery.nice-select.min.js"></script>
+    <script src="js/lib/wow.min.js"></script>
+    <script src="js/lib/sweetalert2.min.js" type="text/javascript"></script>
+    <script src="js/lib/modernizr.2.5.3.min.js"type="text/javascript"></script>
+    <script src="js/lib/turn.html4.min.js" type="text/javascript"></script>
+    <script src="js/lib/turn.js" type="text/javascript"></script>
+    
+    <script src="js/lib/angular.min.js" type="text/javascript"></script>
+    <script src="js/lib/angular-animate.min.js" type="text/javascript"></script>
+    <script src="js/lib/angular-sanitize.min.js" type="text/javascript"></script>
+    <script src="js/lib/angular-cookies.min.js" type="text/javascript"></script>
+    <script src="js/lib/angular-ui-route.min.js" type="text/javascript"></script>
+    <script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js" type="text/javascript"></script>
+    <script src="js/lib/grecaptcha-min.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+    <!-- ==================       CONTOLLERS    ================== -->
+    <script src="js/controller/inicio.js" type="text/javascript"></script>
+    <script src="js/controller/contacto.js" type="text/javascript"></script>
+    <script src="js/controller/checkout.js" type="text/javascript"></script>
+    <script src="js/controller/producto.js" type="text/javascript"></script>
+    <script src="js/controller/registrate.js" type="text/javascript"></script>
+    <script src="js/controller/gestion-contrasena.js" type="text/javascript"></script>
+    <script src="js/controller/login.js" type="text/javascript"></script>
+
+    <script src="js/controller/admin/Categoria.js" type="text/javascript"></script>
+    <script src="js/controller/admin/Libro.js" type="text/javascript"></script>
+    <script src="js/controller/admin/Pedido.js" type="text/javascript"></script>
+    <script src="js/controller/admin/Cuenta.js" type="text/javascript"></script>
+    <script src="js/controller/admin/Flipbook.js" type="text/javascript"></script>
+    <!-- ==================       SERVICES    ================== -->
+    <script src="js/service/disponible.js" type="text/javascript"></script>
+    <script src="js/service/admin/Categoria.js" type="text/javascript"></script>
+    <script src="js/service/admin/Cuenta.js" type="text/javascript"></script>
+    <script src="js/service/admin/Libro.js" type="text/javascript"></script>
+    <script src="js/service/admin/Pedido.js" type="text/javascript"></script>
+</html>

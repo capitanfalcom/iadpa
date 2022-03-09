@@ -1,0 +1,115 @@
+<!-- Breadcumb Area -->
+<div class="breadcumb_area">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <h5>Detalle Producto</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Area -->
+
+<!-- Single Product Details Area -->
+<section class="single_product_details_area">
+    <div class="container mb-50">
+        <div class="row">
+            <div class="col-12 col-lg-6" ng-show="producto !== null">
+                <div class="single_product_thumb">
+                    <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+
+                        <!-- Carousel Inner -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a title="{{producto.nombre}}">
+                                    <img class="d-block" ng-src="{{baseImage()}}{{producto.archivo}}" alt="{{producto.nombre}}">
+                                </a>
+                                <!-- Product Badge -->
+                                <div class="product_badge" ng-show="producto.descuento > 0">
+                                    <span class="badge-offer">Oferta</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Single Product Description -->
+            <div class="col-12 col-lg-6" ng-show="producto !== null">
+                <div class="single_product_desc">
+                    <h4 class="title mb-2" ng-bind="producto.nombre"></h4>
+                    <h6 class="price mb-4">
+                        <p ng-bind="producto.total | currency"></p> 
+                        <span ng-show="producto.descuento > 0" ng-bind="producto.precio | currency"></span>
+                    </h6>
+
+                    <!-- Overview -->
+                    <div class="short_overview mb-4">
+                        <h6>Descripción</h6>
+                        <p class="text-justify" ng-bind="producto.descripcion"></p>
+                    </div>
+
+                    <div class="short_overview mb-4" ng-show="producto.caracteristicas.length > 0">
+                        <h6>Características</h6>
+                        <ul>
+                            <li ng-repeat="item in producto.caracteristicas">
+                                <p><i class="fa fa-check" aria-hidden="true"></i> <span ng-bind="item.nombre"></span></p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Add to Cart Form -->
+                    <form class="cart clearfix my-5 d-flex flex-wrap align-items-center" method="post">
+                        <div class="quantity">
+                            <input type="number" class="qty-text form-control" step="1" min="1" max="12" name="quantity" value="1" ng-model="cantidad">
+                        </div>
+                        <button name="addtocart" value="5" ng-click="agregarCarro()" class="btn btn-primary mt-1 mt-md-0 ml-1 ml-md-3">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Single Product Details Area End -->
+
+
+<!-- Related Products Area -->
+<section class="you_may_like_area section_padding_0_100 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_heading new_arrivals">
+                    <h5>Productos similares</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="itemsRelacioando" class="you_make_like_slider owl-carousel">
+                    <div class="single_popular_item" ng-repeat="item in relacionados">
+                        <div class="product_image">
+                            <!-- Product Image -->
+                            <img class="normal_img" ng-src="{{baseImage()}}{{item.archivo}}" style="height: 250px;" alt="">
+
+                            <!-- Badge -->
+                            <div class="product_badge" ng-show="item.descuento > 0">
+                                <span class="badge-offer">Oferta</span>
+                            </div>
+                        </div>
+                        <!-- Product Description -->
+                        <div class="product_description">
+                            <h5 style="height: 44px;">
+                                <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre | limitTo:40"></a>
+                            </h5>
+                            <h6>
+                                <p ng-bind="item.total | currency"></p> 
+                                <span ng-show="item.descuento > 0" ng-bind="item.precio | currency"></span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related Products Area -->

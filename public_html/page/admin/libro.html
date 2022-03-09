@@ -1,0 +1,210 @@
+<!-- Breadcumb Area -->
+<div class="breadcumb_area">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <h5>Libros</h5>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-warning btn-sm" ng-click="agregar()">Agregar</button>
+                    <button type="button" class="btn btn-dark btn-sm" ng-click="actualizar()">Actualizar</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Area -->
+
+<div class="shortcodes_area">
+    <div class="container">
+        <div class="table-responsive">
+            <div class="input-group mt-3 mb-3" ng-show="arreglo.sorting">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Buscar</span>
+                </div>
+                <input type="text" class="form-control" ng-model="arreglo.search" ng-change="arreglo.searchPage()">
+            </div>
+            <table class="table table-bordered table-sm mt-15">
+                <thead>
+                    <tr>
+                        <th width="10%" sorting-column="id">ID</th>
+                        <th width="30%" sorting-column="nombre">NOMBRE</th>
+                        <th width="10%" sorting-column="precio">PRECIO</th>
+                        <th width="10%">ACTIVO</th>
+                        <th width="20%">CATEGORIA</th>
+                        <th width="20%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in arreglo.page">
+                        <td width="10%" ng-bind="item.id"></td>
+                        <td width="30%" ng-bind="item.nombre"></td>
+                        <td width="10%" ng-bind="item.precio | currency" class="text-right"></td>
+                        <td width="10%" ng-bind="(item.activo ? 'SI' : 'NO')"></td>
+                        <td width="20%" ng-bind="item.categoria.id | searchObject: parametro.categorias: 'nombre'"></td>
+                        <td width="20%">
+                            <button class="btn btn-outline-info btn-sm" ng-click="revisar(item.id)">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-info btn-sm" ng-click="editar(item.id)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <div class="row" ng-show="arreglo.count > 0" style="margin: 4px">
+                                <div class="col-3" style="padding: 0px;">
+                                    <select class="form-control" 
+                                            ng-model="arreglo.quantity" ng-options="item for item in arreglo.options" ng-change="arreglo.quantityPage()">
+                                    </select>
+                                </div>
+                                <div class="col-9 text-right" style="padding: 0px;" ng-show="arreglo.count > 0">
+                                    <nav>
+                                        <ul class="pagination justify-content-end">
+                                            <li class="page-item" ng-class="{disabled: arreglo.current <= 0}">
+                                                <a class="page-link" ng-click="arreglo.prevPage()">
+                                                    <span aria-hidden="true">«</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link">
+                                                    {{arreglo.current}}/{{arreglo.final}}
+                                                </a>
+                                            </li>
+                                            <li class="page-item" ng-class="{disabled: arreglo.current >= arreglo.final}">
+                                                <a class="page-link" ng-click="arreglo.nextPage()">
+                                                    <span aria-hidden="true">»</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-12" ng-show="arreglo.count === 0">
+                                <div class="alert alert-primary text-center">
+                                    <h4>Sin Datos</h4>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="formulario" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Formulario</h5>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" ng-disabled="bloquear" ng-model="formLibro.nombre" azs-length="250">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Categoria:</label>
+                            <select class="form-control" ng-disabled="bloquear" ng-model="formLibro.categoria" 
+                                    ng-options="item.nombre for item in parametro.categorias"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Precio:</label>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td width="60%">
+                                                Valor:
+                                            </td>
+                                            <td width="40%">
+                                                <input type="number" class="form-control" ng-disabled="bloquear" ng-model="formLibro.precio">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="60%">
+                                                Descuento:
+                                            </td>
+                                            <td width="40%">
+                                                <input type="number" class="form-control" ng-disabled="bloquear" ng-model="formLibro.descuento">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="60%">
+                                                Total:
+                                            </td>
+                                            <td width="40%">
+                                                <span class="input-group-text" ng-bind="(formLibro.precio - formLibro.descuento) | currency"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" ng-disabled="bloquear" ng-model="formLibro.activo" id="libroCheck">
+                            <label class="form-check-label" for="libroCheck">Activar</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group text-center">                            
+                            <img ng-src="data:image/png;base64, {{formLibro.archivoBase64}}" onerror="this.src='img/portada.png';" style="height: 400px; width: 400px"/>                            
+                            <div class="custom-file">
+                                <input type="file" ng-hide="bloquear" class="custom-file-input" id="customFileLang" 
+                                       ng-disabled="bloquear" file-model="formLibro.archivoBase64" accept="image/png">
+                                <label class="custom-file-label" for="customFileLang" data-browse="Elegir">Seleccionar archivo de 400x400</label>
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Descripción:</label>
+                            <textarea rows="7" style="resize: none;" class="form-control" 
+                                      ng-disabled="bloquear" ng-model="formLibro.descripcion"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Caracteristicas:</label>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr ng-repeat="c in formLibro.caracteristicas">
+                                            <td width="80%">
+                                                <input type="text" class="form-control" ng-disabled="bloquear" ng-model="c.nombre" azs-length="250">
+                                            </td>
+                                            <td width="20%">
+                                                <button class="btn btn-danger btn-block btn-sm" ng-hide="bloquear" ng-click="quitarCaracteristica($index)">
+                                                    <i class="fa fa-trash"></i> Quitar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td width="80%"></td>
+                                            <td width="20%">
+                                                <button class="btn btn-primary btn-block btn-sm" ng-hide="bloquear" ng-click="agregarCaracteristica()">
+                                                    <i class="fa fa-plus"></i> Agregar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="guardar()" ng-hide="opcion === 4">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

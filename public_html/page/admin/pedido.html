@@ -1,0 +1,200 @@
+<!-- Breadcumb Area -->
+<div class="breadcumb_area">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <h5>Pedidos</h5>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-dark btn-sm" ng-click="actualizar()">Actualizar</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Area -->
+
+<div class="shortcodes_area">
+    <div class="container">
+        <div class="table-responsive">
+            <div class="input-group mt-3 mb-3" ng-show="arreglo.sorting">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Buscar</span>
+                </div>
+                <input type="text" class="form-control" ng-model="arreglo.search" ng-change="arreglo.searchPage()">
+            </div>
+            <table class="table table-bordered table-sm mt-15">
+                <thead>
+                    <tr>
+                        <th width="10%" sorting-column="id">ID</th>
+                        <th width="10%" sorting-column="fecha">FECHA</th>
+                        <th width="30%" sorting-column="nombre">NOMBRE</th>
+                        <th width="40%">DIRECCION</th>
+                        <th width="10%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in arreglo.page">
+                        <td width="10%" ng-bind="item.id"></td>
+                        <td width="10%" ng-bind="item.fecha"></td>
+                        <td width="30%" ng-bind="item.nombre + ' ' + item.apellido"></td>
+                        <td width="40%" ng-bind="item.direccion"></td>
+                        <td width="10%">
+                            <button class="btn btn-light btn-sm" data-toggle="modal" data-target="#formulario" 
+                                    ng-click="revisar(item.id)">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <div class="row" ng-show="arreglo.count > 0" style="margin: 4px">
+                                <div class="col-3" style="padding: 0px;">
+                                    <select class="form-control" 
+                                            ng-model="arreglo.quantity" ng-options="item for item in arreglo.options" ng-change="arreglo.quantityPage()">
+                                    </select>
+                                </div>
+                                <div class="col-9 text-right" style="padding: 0px;" ng-show="arreglo.count > 0">
+                                    <nav>
+                                        <ul class="pagination justify-content-end">
+                                            <li class="page-item" ng-class="{disabled: arreglo.current <= 0}">
+                                                <a class="page-link" ng-click="arreglo.prevPage()">
+                                                    <span aria-hidden="true">«</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link">
+                                                    {{arreglo.current}}/{{arreglo.final}}
+                                                </a>
+                                            </li>
+                                            <li class="page-item" ng-class="{disabled: arreglo.current >= arreglo.final}">
+                                                <a class="page-link" ng-click="arreglo.nextPage()">
+                                                    <span aria-hidden="true">»</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="col-12" ng-show="arreglo.count === 0">
+                                <div class="alert alert-primary text-center">
+                                    <h4>Sin Datos</h4>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="formulario" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Formulario</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Fecha:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.fecha">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nombre:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.nombre">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Apellido:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.apellido">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Correo:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.correo">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Telefono:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.telefono">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Direccion:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.direccion">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Ciudad:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.ciudad">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Provincia:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.provincia">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Codigo:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.codigo">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Transaccion:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" disabled ng-model="formPedido.transaccion">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Comentario:</label>
+                        <div class="col-sm-10">
+                            <textarea rows="3" style="resize: none;" class="form-control-plaintext" disabled ng-model="formPedido.comentario"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Detalle:</label>
+                        <div class="col-sm-10">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Libro</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="d in formPedido.detalle">
+                                            <td ng-bind="d.libro.nombre"></td>
+                                            <td ng-bind="d.cantidad"></td>
+                                            <td ng-bind="d.precio"></td>
+                                            <td ng-bind="d.total"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>         
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

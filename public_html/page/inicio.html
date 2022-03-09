@@ -1,0 +1,226 @@
+<script>
+    $(document).ready(function () {
+        var bigshopWindow = $(window),
+                wel_slides = $('.welcome_slides');
+
+        // :: Preloader Code
+
+        bigshopWindow.on('load', function () {
+            $('#preloader').fadeOut('1000', function () {
+                $(this).remove();
+            });
+        });
+
+        // :: Hero Slides Code - Home 1
+
+        if ($.fn.owlCarousel) {
+            wel_slides.owlCarousel({
+                items: 1,
+                margin: 0,
+                loop: true,
+                dots: true,
+                nav: true,
+                navText: ['<i class="icofont-rounded-left"></i>', '<i class="icofont-rounded-right"></i>'],
+                autoplay: true,
+                autoplayTimeout: 6000,
+                smartSpeed: 800,
+                animateIn: "fadeIn",
+                animateOut: "fadeOut"
+            });
+
+            wel_slides.on('translate.owl.carousel', function () {
+                var layer = $("[data-animation]");
+                layer.each(function () {
+                    var anim_name = $(this).data('animation');
+                    $(this).removeClass('animated ' + anim_name).css('opacity', '0');
+                });
+            });
+
+            $("[data-delay]").each(function () {
+                var anim_del = $(this).data('delay');
+                $(this).css('animation-delay', anim_del);
+            });
+
+            $("[data-duration]").each(function () {
+                var anim_dur = $(this).data('duration');
+                $(this).css('animation-duration', anim_dur);
+            });
+
+            wel_slides.on('translated.owl.carousel', function () {
+                var layer = wel_slides.find('.owl-item.active').find("[data-animation]");
+                layer.each(function () {
+                    var anim_name = $(this).data('animation');
+                    $(this).addClass('animated ' + anim_name).css('opacity', '1');
+                });
+            });
+        }
+
+        //::  WoW Active Code
+
+        if (bigshopWindow.width() > 767) {
+            new WOW().init();
+        }
+    });
+</script>
+
+<!-- Welcome Slides Area -->
+<section class="welcome_area">
+    <div class="welcome_slides modern-slides owl-carousel">
+        <!-- Single Slide -->
+        <div class="single_slide bg-img bg-overlay" style="background-image: url(img/bg-img/web-cover.png);">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12">
+                        <div class="welcome_slide_text text-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Single Slide -->
+        <div class="single_slide bg-img bg-overlay" style="background-image: url(img/bg-img/banner.png);">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12">
+                        <div class="welcome_slide_text text-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Welcome Slides Area -->
+
+<section class="featured_product_area mt-15">
+    <div class="container">
+        <div class="row">
+
+            <!-- Biblias Items Area -->
+            <div class="col-12">
+                <div class="section_heading featured">
+                    <h5>Biblia</h5>
+                </div>
+                <div id="itemsBiblia" class="featured_product_slides owl-carousel">
+                    <!-- Single Popular Item -->
+                    <div class="single_popular_item"  ng-repeat="item in productos.biblia">
+                        <div class="product_image">
+                            <!-- Product Image -->
+                            <img class="normal_img" ng-src="{{baseImage()}}{{item.archivo}}" style="height: 250px;" alt="">
+
+                            <!-- Badge -->
+                            <div class="product_badge" ng-show="item.descuento > 0">
+                                <span class="badge-offer">Oferta</span>
+                            </div>
+                        </div>
+                        <!-- Product Description -->
+                        <div class="product_description">
+                            <h5 style="height: 44px;">
+                                <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre | limitTo:40"></a>
+                            </h5>
+                            <h6>
+                                <p ng-bind="item.total | currency"></p> 
+                                <span ng-show="item.descuento > 0" ng-bind="item.precio | currency"></span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salud Items Area -->
+            <div class="col-12">
+                <div class="section_heading featured">
+                    <h5>Salud</h5>
+                </div>
+                <div id="itemsSalud" class="featured_product_slides owl-carousel">
+                    <!-- Single Popular Item -->
+                    <div class="single_popular_item" ng-repeat="item in productos.salud">
+                        <div class="product_image">
+                            <!-- Product Image -->
+                            <img class="normal_img" ng-src="{{baseImage()}}{{item.archivo}}" style="height: 250px;" alt="">
+
+                            <!-- Badge -->
+                            <div class="product_badge" ng-show="item.descuento > 0">
+                                <span class="badge-offer">Oferta</span>
+                            </div>
+                        </div>
+                        <!-- Product Description -->
+                        <div class="product_description">
+                            <h5 style="height: 44px;">
+                                <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre | limitTo:40"></a>
+                            </h5>
+                            <h6>
+                                <p ng-bind="item.total | currency"></p> 
+                                <span ng-show="item.descuento > 0" ng-bind="item.precio | currency"></span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Familia Items Area -->
+            <div class="col-12">
+                <div class="section_heading featured">
+                    <h5>Familia</h5>
+                </div>
+                <div id="itemsFamilia" class="featured_product_slides owl-carousel">
+                    <!-- Single Popular Item -->
+                    <div class="single_popular_item"  ng-repeat="item in productos.familia">
+                        <div class="product_image">
+                            <!-- Product Image -->
+                            <img class="normal_img" ng-src="{{baseImage()}}{{item.archivo}}" style="height: 250px;" alt="">
+
+                            <!-- Badge -->
+                            <div class="product_badge" ng-show="item.descuento > 0">
+                                <span class="badge-offer">Oferta</span>
+                            </div>
+                        </div>
+                        <!-- Product Description -->
+                        <div class="product_description">
+                            <h5 style="height: 44px;">
+                                <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre | limitTo:40"></a>
+                            </h5>
+                            <h6>
+                                <p ng-bind="item.total | currency"></p> 
+                                <span ng-show="item.descuento > 0" ng-bind="item.precio | currency"></span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Niños Items Area -->
+            <div class="col-12">
+                <div class="section_heading featured">
+                    <h5>Niños</h5>
+                </div>
+                <div id="itemsNino" class="featured_product_slides owl-carousel">
+                    <!-- Single Popular Item -->
+                    <div class="single_popular_item"  ng-repeat="item in productos.nino">
+                        <div class="product_image">
+                            <!-- Product Image -->
+                            <img class="normal_img" ng-src="{{baseImage()}}{{item.archivo}}" style="height: 250px;" alt="">
+
+                            <!-- Badge -->
+                            <div class="product_badge" ng-show="item.descuento > 0">
+                                <span class="badge-offer">Oferta</span>
+                            </div>
+                        </div>
+                        <!-- Product Description -->
+                        <div class="product_description">
+                            <h5 style="height: 44px;">
+                                <a href ui-sref="libro({id: item.id})" ng-bind="item.nombre | limitTo:40"></a>
+                            </h5>
+                            <h6>
+                                <p ng-bind="item.total | currency"></p> 
+                                <span ng-show="item.descuento > 0" ng-bind="item.precio | currency"></span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
